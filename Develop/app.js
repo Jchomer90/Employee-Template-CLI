@@ -13,6 +13,95 @@ const render = require("./lib/htmlRenderer");
 
 // Write code to use inquirer to gather information about the development team members,
 // and to create objects for each team member (using the correct classes as blueprints!)
+let employees = [];
+
+inquirer
+    .prompt([
+        {
+            type: "input",
+            name: "managerName",
+            message: "What is your manager's name?"
+        },
+        {
+            type: "input",
+            name: "managerId",
+            message: "What is your manager's id?"
+        },
+        {
+            type: "input",
+            name: "managerEmail",
+            message: "What is your manager's email?"
+        },
+        {
+            type: "input",
+            name: "managerOfficeNum",
+            message: "What is your manager's office number?"
+        }
+
+    .then(function (response) {
+        let newManager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOfficeNum);
+        employees.push(newManager);
+        let exit = false;
+        function moreEmployees();
+    }),
+
+function anotherEmployee() {
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "addNewEmployee",
+                message: "Which type of team member would you like to add?",
+                choices: ["Engineer", "Intern", "I don't want to add any more team members"]
+            }
+        ])
+    .then (function(newEmployee) {
+        if (newEmployee.choices === "Engineer") {
+
+        }
+        else if (newEmployee.choices === "Intern") {
+
+        }
+        else {
+            render.render(employees);
+            exit = true;
+        }
+    })
+    let engineerPrompt = ([
+        {
+            type: "input",
+            name: "engineerName",
+            message: "What is your engineer's name?"
+        },
+        {
+            type: "input",
+            name: "engineerId",
+            message: "What is your engineer's id?"
+        },
+        {
+            type: "input",
+            name: "engineerEmail",
+            message: "What is your engineer's email?"
+        }
+    ])
+    let internPrompt = ([
+        {
+            type: "input",
+            name: "internName",
+            message: "What is your intern's name?"
+        },
+        {
+            type: "input",
+            name: "internId",
+            message: "What is your intern's id?"
+        },
+        {
+            type: "input",
+            name: "internSchool",
+            message: "What is your intern's school?"
+        }
+    ])
+}
 
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
