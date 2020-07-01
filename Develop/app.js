@@ -36,37 +36,14 @@ inquirer
             type: "input",
             name: "managerOfficeNum",
             message: "What is your manager's office number?"
-        }
+        }])
 
     .then(function (response) {
         let newManager = new Manager(response.managerName, response.managerId, response.managerEmail, response.managerOfficeNum);
         employees.push(newManager);
-        let exit = false;
-        function moreEmployees();
-    }),
+        anotherEmployee();
+    });
 
-function anotherEmployee() {
-    inquirer
-        .prompt([
-            {
-                type: "list",
-                name: "addNewEmployee",
-                message: "Which type of team member would you like to add?",
-                choices: ["Engineer", "Intern", "I don't want to add any more team members"]
-            }
-        ])
-    .then (function(newEmployee) {
-        if (newEmployee.choices === "Engineer") {
-
-        }
-        else if (newEmployee.choices === "Intern") {
-
-        }
-        else {
-            render.render(employees);
-            exit = true;
-        }
-    })
     let engineerPrompt = ([
         {
             type: "input",
@@ -82,6 +59,11 @@ function anotherEmployee() {
             type: "input",
             name: "engineerEmail",
             message: "What is your engineer's email?"
+        },
+        {
+            type: "input",
+            name: "engineerGithub",
+            message: "What is your engineer's GitHub account?"
         }
     ])
     let internPrompt = ([
@@ -97,10 +79,50 @@ function anotherEmployee() {
         },
         {
             type: "input",
+            name: "internEmail",
+            message: "What is your intern's email?"
+        },
+        {
+            type: "input",
             name: "internSchool",
             message: "What is your intern's school?"
         }
     ])
+function anotherEmployee() {
+    inquirer
+        .prompt([
+            {
+                type: "list",
+                name: "addNewEmployee",
+                message: "Which type of team member would you like to add?",
+                choices: ["Engineer", "Intern", "I don't want to add any more team members"]
+            }
+        ])
+    .then (function(newEmployee) {
+        if (newEmployee.choices === "Engineer") {
+            inquirer.prompt(engineerPrompt)
+            .then(function(response){
+                let newEngineer = new Engineer(response.engineerName, response.engineerId, response.engineerEmail, response.engineerGithub);
+                employees.push(newEngineer);
+                // Make new employee and push
+                anotherEmployee();
+            })
+
+        }
+        else if (newEmployee.choices === "Intern") {
+            inquirer.prompt(internPrompt)
+            .then(function(response){
+                let newIntern = new Intern(response.internName, response.internId, response.internEmail, response.internSchool);
+                employees.push(newIntern);
+                // Make new employee and push
+                anotherEmployee();
+            })
+        }
+        else {
+            var html = render(employees);
+        }
+    })
+
 }
 
 // After the user has input all employees desired, call the `render` function (required
