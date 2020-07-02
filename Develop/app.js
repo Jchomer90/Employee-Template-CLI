@@ -44,6 +44,9 @@ inquirer
         anotherEmployee();
     });
 
+
+function anotherEmployee() {
+
     let engineerPrompt = ([
         {
             type: "input",
@@ -88,7 +91,7 @@ inquirer
             message: "What is your intern's school?"
         }
     ])
-function anotherEmployee() {
+
     inquirer
         .prompt([
             {
@@ -99,7 +102,7 @@ function anotherEmployee() {
             }
         ])
     .then (function(newEmployee) {
-        if (newEmployee.choices === "Engineer") {
+        if (newEmployee.addNewEmployee === "Engineer") {
             inquirer.prompt(engineerPrompt)
             .then(function(response){
                 let newEngineer = new Engineer(response.engineerName, response.engineerId, response.engineerEmail, response.engineerGithub);
@@ -109,7 +112,7 @@ function anotherEmployee() {
             })
 
         }
-        else if (newEmployee.choices === "Intern") {
+        else if (newEmployee.addNewEmployee === "Intern") {
             inquirer.prompt(internPrompt)
             .then(function(response){
                 let newIntern = new Intern(response.internName, response.internId, response.internEmail, response.internSchool);
@@ -120,11 +123,17 @@ function anotherEmployee() {
         }
         else {
             var html = render(employees);
+            fs.writeFile("team.html", html, err => {
+                if (err) {
+                    console.log(err);
+                }
+                console.log("Your file 'team.html' has been created!");
+            })
         }
     })
 
 }
-
+// return html;
 // After the user has input all employees desired, call the `render` function (required
 // above) and pass in an array containing all employee objects; the `render` function will
 // generate and return a block of HTML including templated divs for each employee!
